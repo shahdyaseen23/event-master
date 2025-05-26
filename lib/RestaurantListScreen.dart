@@ -1,127 +1,113 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart'; // تأكد من إضافتها في pubspec.yaml
-import 'RestaurantDetailScreen.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'RestaurantDetailsScreen.dart';
 
-classimport 'package:flutter/material.dart';
-import 'full_image_screen.dart';
-
-class PhotographerDetailScreen extends StatelessWidget {
-  final Map<String, dynamic> photographer;
-
-  const PhotographerDetailScreen(this.photographer, {super.key});
-
+class RestaurantListScreen extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(photographer['name'])),
-      backgroundColor: Color(0xFFE3F2FD),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding: EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.deepPurple[100],
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('📍 المدينة: ${photographer['city']}', style: _infoStyle()),
-                  Text('📷 نوع العمل: ${photographer['mobile'] ? 'ميداني' : 'استوديو فقط'}', style: _infoStyle()),
-                  Text('⭐ التقييم: ${photographer['rating']}', style: _infoStyle()),
-                  Text('📞 رقم التواصل: ${photographer['phone']}', style: _infoStyle()),
-                ],
-              ),
-            ),
-            SizedBox(height: 20),
-            Text('📸 أعمال المصور:', style: _titleStyle()),
-            SizedBox(height: 10),
-            SizedBox(height: 100, child: _buildImageList(context)),
-            SizedBox(height: 20),
-            Text('🗓️ المواعيد المتوفرة:', style: _titleStyle()),
-            SizedBox(height: 10),
-            _buildCalendar(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  TextStyle _infoStyle() => TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black87);
-  TextStyle _titleStyle() => TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.deepPurple[700]);
-
-  Widget _buildImageList(BuildContext context) {
-    return ListView(
-      scrollDirection: Axis.horizontal,
-      children: photographer['portfolioImages']
-          .map<Widget>(
-            (img) => GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => FullImageScreen(imagePath: img),
-                  ),
-                );
-              },
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: Image.asset(img, width: 100, height: 100, fit: BoxFit.cover),
-                ),
-              ),
-            ),
-          )
-          .toList(),
-    );
-  }
-
-  Widget _buildCalendar() {
-    final now = DateTime.now();
-    final List<String> dummyDates = List.generate(10, (i) {
-      final date = now.add(Duration(days: i * 3));
-      return "${date.year}-${date.month}-${date.day}";
-    });
-
-    return Wrap(
-      spacing: 10,
-      runSpacing: 10,
-      children: dummyDates
-          .map((date) => Chip(
-                label: Text(date),
-                backgroundColor: Colors.green[100],
-              ))
-          .toList(),
-    );
-  }
+  _RestaurantListScreenState createState() => _RestaurantListScreenState();
 }
- extends StatelessWidget {
-  final List<Map<String, dynamic>> restaurants = [
-    {
-      'name': 'fareed zamano',
-      'image': 'assets/fareed.jpg',
-      'rating': 4.7,
-      'location': 'رفيديا - نابلس',
-      'phone': '0593130136',
-       'foodImages': ['assets/f1.jpg', 'assets/f2.jpg'],
-    },
-    {
-      'name': '1948',
-      'image': 'assets/1948.jpg',
-      'rating': 4.5,
-      'location': 'رفيديا - نابلس',
-      'phone': '0597888807',
-      'foodImages': ['assets/jeb.jpg', 'assets/ma.jpg' ,'assets/kob.jpg'],
-    },
-  ];
+
+class _RestaurantListScreenState extends State<RestaurantListScreen> {
+ final List<Map<String, dynamic>> _allRestaurants = [
+  {
+    'name': 'fareed zamano',
+    'image': 'assets/fareed.jpg',
+    'rating': 4.7,
+    'location': 'رفيديا - نابلس',
+    'phone': '0593130136',
+    'foodImages': ['assets/f1.jpg', 'assets/f2.jpg'],
+    'city': 'نابلس',
+    'customerReviews': [
+      {
+        'name': 'أحمد',
+        'rating': 5,
+        'comment': 'طعام ممتاز وخدمة رائعة!',
+      },
+      {
+        'name': 'ليلى',
+        'rating': 4,
+        'comment': 'الجو جميل لكن الأسعار مرتفعة قليلاً.',
+      },
+    ],
+  },
+  {
+    'name': '1948',
+    'image': 'assets/1948.jpg',
+    'rating': 4.5,
+    'location': 'رفيديا - نابلس',
+    'phone': '0597888807',
+    'foodImages': ['assets/jeb.jpg', 'assets/ma.jpg', 'assets/kob.jpg'],
+    'city': 'نابلس',
+    'customerReviews': [
+      {
+        'name': 'سعيد',
+        'rating': 4,
+        'comment': 'الطعام شهي والمكان نظيف.',
+      },
+    ],
+  },
+  {
+    'name': 'مطعم القدس',
+    'image': 'assets/f1.jpg',
+    'rating': 4.2,
+    'location': 'شارع القدس - الخليل',
+    'phone': '0599XXXXXX',
+    'foodImages': ['assets/jeb.jpg', 'assets/kob.jpg'],
+    'city': 'الخليل',
+    'customerReviews': [
+       {
+        'name': 'منى',
+        'rating': 5,
+        'comment': 'أفضل بوفيه حضرته على الإطلاق!',
+      },
+    ],
+  },
+  {
+    'name': 'مطعم حلا',
+    'image': 'assets/f2.jpg',
+    'rating': 4.2,
+    'location': 'شارع القدس - الخليل',
+    'phone': '0599XXXXXX',
+    'foodImages': ['assets/kob.jpg', 'assets/jeb.jpg'],
+    'city': 'طولكرم',
+    'customerReviews': [
+      {
+        'name': 'منى',
+        'rating': 5,
+        'comment': 'أفضل بوفيه حضرته على الإطلاق!',
+      },
+    ],
+  },
+];
+
+    
+ 
+
+  List<Map<String, dynamic>> _filteredRestaurants = [];
+  final _searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _filteredRestaurants = List.from(_allRestaurants); // تهيئة القائمة المفلترة بكل المطاعم
+  }
+
+  void _filterRestaurants(String city) {
+    setState(() {
+      if (city.isEmpty) {
+        _filteredRestaurants = List.from(_allRestaurants);
+      } else {
+        _filteredRestaurants = _allRestaurants
+            .where((res) => res['city'].toLowerCase().contains(city.toLowerCase()))
+            .toList();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFF7F7F7),
       body: SafeArea(
         child: Column(
           children: [
@@ -131,19 +117,37 @@ class PhotographerDetailScreen extends StatelessWidget {
                 'قائمة المطاعم التي توفر بوفيهات للمناسبات',
                 textAlign: TextAlign.center,
                 style: GoogleFonts.cairo(
-                  fontSize: 24,
+                  fontSize: 22,
                   fontWeight: FontWeight.bold,
+                  color: Colors.deepPurple,
                 ),
+              ),
+            ),
+            SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: TextField(
+                controller: _searchController,
+                decoration: InputDecoration(
+                  hintText: 'أدخل اسم المدينة',
+                  prefixIcon: Icon(Icons.search),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                onChanged: (value) {
+                  _filterRestaurants(value);
+                },
               ),
             ),
             SizedBox(height: 20),
             Expanded(
               child: ListView.builder(
-                itemCount: restaurants.length,
+                itemCount: _filteredRestaurants.length,
                 itemBuilder: (context, index) {
-                  final res = restaurants[index];
+                  final res = _filteredRestaurants[index];
                   return Card(
-                    elevation: 5,
+                    elevation: 4,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),
                     ),
@@ -180,7 +184,8 @@ class PhotographerDetailScreen extends StatelessWidget {
                               location: res['location'],
                               rating: res['rating'].toDouble(),
                               phone: res['phone'],
-                              reviewImages: List<String>.from(res['foodImages']),
+                              reviewImages: List<String>.from(res['foodImages'] ?? []),
+                                customerReviews: res['customerReviews'] ?? [], 
                             ),
                           ),
                         );
